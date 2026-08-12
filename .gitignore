@@ -1,1 +1,10 @@
+# Executables
+*.out
+*.exe
+
 client
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
