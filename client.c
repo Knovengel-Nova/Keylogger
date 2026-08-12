@@ -6,7 +6,8 @@
 
 #define BUFFER_SIZE 150
 
-struct KeyEvent{
+struct KeyEvent
+{
     long tv_sec;
     long tv_usec;
     unsigned short code;
@@ -46,7 +47,8 @@ void getKeyStrokeEvent(struct input_event ie)
 
         buffer_count++;
 
-        if(buffer_count >= BUFFER_SIZE){
+        if (buffer_count >= BUFFER_SIZE)
+        {
             printf("Memory Buffer Full. Appending to DB\n");
 
             // append to DB
