@@ -135,6 +135,8 @@ void getKeyStrokeEvent(struct input_event ie)
     }
 }
 
+//  DB related fxn
+//  Inserted Memory data to DB
 int insertBatch(struct KeyEvent *buffer, int count)
 {
     const char *sql =
