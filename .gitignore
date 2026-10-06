@@ -1,10 +1,17 @@
-# Executables
-*.out
-*.exe
+# IntelliJ
+.idea/
+*.iml
 
-client
+# Maven
+agent/target/
 
-# SQLite databases
-*.db
-*.db-shm
-*.db-wal
+# C build
+native/build/
+
+# SQLite runtime database
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Logs
+*.log
