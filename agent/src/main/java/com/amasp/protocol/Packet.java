@@ -5,14 +5,12 @@ import java.util.UUID;
 public class Packet {
     protected PacketType packetType;
     protected UUID deviceId;
-    protected int port;
 
     public Packet(){}
 
-    public Packet(PacketType packetType, UUID deviceId,  int port) {
+    public Packet(PacketType packetType, UUID deviceId) {
         this.packetType = packetType;
         this.deviceId = deviceId;
-        this.port = port;
     }
 
     public PacketType getPacketType() {
@@ -30,12 +28,8 @@ public class Packet {
     public void setDeviceId(UUID deviceId) {
         this.deviceId = deviceId;
     }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    @Override
+    public String toString() {
+        return "pkt"+"["+packetType+","+deviceId+"]";
     }
 }
