@@ -1,0 +1,3 @@
+sqlite3 ../data/events.db -> to check the table contents
+
+sudo make run INPUT=/dev/input/event3 DB=../data/events.db -> run native

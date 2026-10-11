@@ -55,6 +55,7 @@ public class UdpListener implements Runnable{
 
             case ACK ->
                 handleAck(packet, pkt);
+            default -> throw new IllegalArgumentException("Unexpected value: " + pkt.getPacketType());
         }
     }
 
