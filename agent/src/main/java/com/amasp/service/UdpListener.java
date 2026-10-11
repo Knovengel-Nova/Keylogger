@@ -1,6 +1,5 @@
 package com.amasp.service;
 
-import com.amasp.Agent;
 import com.amasp.AgentContext;
 import com.amasp.protocol.Packet;
 import com.amasp.protocol.PacketSerializer;

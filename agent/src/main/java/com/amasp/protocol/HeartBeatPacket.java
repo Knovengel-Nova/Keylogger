@@ -1,6 +1,5 @@
 package com.amasp.protocol;
 
-import java.net.DatagramPacket;
 import java.util.UUID;
 
 public class HeartBeatPacket extends Packet {
