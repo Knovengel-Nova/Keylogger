@@ -23,4 +23,6 @@ clean:
 	rm -rf build
 
 run: $(TARGET)
-	./$(TARGET)
+	@test -n "$(INPUT)" || (echo "Usage: make run INPUT=<input-file> DB=<database-path>"; exit 1)
+	@test -n "$(DB)" || (echo "Usage: make run INPUT=<input-file> DB=<database-path>"; exit 1)
+	./$(TARGET) "$(INPUT)" "$(DB)"

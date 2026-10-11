@@ -23,16 +23,17 @@ void handleKeyStroke(struct input_event ie); // populates the keystroke info
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    if (argc != 3)
     {
-        printf("Usage: %s <event-file-path>\n", argv[0]);
+        printf("Usage: %s <input-file-path> <database-path>\n", argv[0]);
         exit(-1);
     }
+
 
     // opening keyboard file
     int fd = open(argv[1], O_RDONLY, 0);
 
-    if (sqlite3_open("events.db", &db) != SQLITE_OK)
+    if (sqlite3_open_v2(argv[2], &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
         fprintf(stderr, "Cannot open database: %s\n",
                 sqlite3_errmsg(db));
