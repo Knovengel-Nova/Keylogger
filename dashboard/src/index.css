@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-bg: var(--color-accent-bg);
+  --color-good: var(--color-good);
+  --color-warn: var(--color-warn);
+  --color-bad: var(--color-bad);
+}
+
+:root {
+  color-scheme: light;
+
+  /* chart chrome & ink — dataviz skill reference palette */
+  --color-bg: #f9f9f7; /* page plane */
+  --color-surface: #fcfcfb; /* chart/card surface */
+  --color-surface-2: #f1f1ee;
+  --color-border: #e1e0d9; /* hairline gridline */
+  --color-border-strong: #c3c2b7; /* baseline / axis */
+  --color-text: #0b0b0b; /* primary ink */
+  --color-text-muted: #52514e; /* secondary ink */
+  --color-text-faint: #898781; /* axis/labels */
+  --color-accent: #2a78d6; /* categorical slot 1 (blue) */
+  --color-accent-bg: rgba(42, 120, 214, 0.1);
+
+  /* status (fixed, never themed) */
+  --color-good: #0ca30c;
+  --color-warn: #fab219;
+  --color-serious: #ec835a;
+  --color-bad: #d03b3b;
+
+  /* categorical series, fixed order */
+  --series-1: #2a78d6; /* blue */
+  --series-2: #eb6834; /* orange */
+  --series-3: #1baf7a; /* aqua */
+  --series-4: #eda100; /* yellow */
+  --series-5: #e87ba4; /* magenta */
+  --series-6: #008300; /* green */
+  --series-7: #4a3aa7; /* violet */
+  --series-8: #e34948; /* red */
+
+  /* sequential (blue), light -> dark */
+  --seq-100: #cde2fb;
+  --seq-250: #86b6ef;
+  --seq-400: #3987e5;
+  --seq-500: #256abf;
+  --seq-650: #104281;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --color-bg: #0d0d0d;
+    --color-surface: #1a1a19;
+    --color-surface-2: #232321;
+    --color-border: #2c2c2a;
+    --color-border-strong: #383835;
+    --color-text: #ffffff;
+    --color-text-muted: #c3c2b7;
+    --color-text-faint: #898781;
+    --color-accent: #3987e5;
+    --color-accent-bg: rgba(57, 135, 229, 0.15);
+
+    --color-good: #0ca30c;
+    --color-warn: #fab219;
+    --color-serious: #ec835a;
+    --color-bad: #d03b3b;
+
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+    --series-8: #e66767;
+
+    --seq-100: #104281;
+    --seq-250: #184f95;
+    --seq-400: #256abf;
+    --seq-500: #3987e5;
+    --seq-650: #86b6ef;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #0d0d0d;
+  --color-surface: #1a1a19;
+  --color-surface-2: #232321;
+  --color-border: #2c2c2a;
+  --color-border-strong: #383835;
+  --color-text: #ffffff;
+  --color-text-muted: #c3c2b7;
+  --color-text-faint: #898781;
+  --color-accent: #3987e5;
+  --color-accent-bg: rgba(57, 135, 229, 0.15);
+
+  --color-good: #0ca30c;
+  --color-warn: #fab219;
+  --color-serious: #ec835a;
+  --color-bad: #d03b3b;
+
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+
+  --seq-100: #104281;
+  --seq-250: #184f95;
+  --seq-400: #256abf;
+  --seq-500: #3987e5;
+  --seq-650: #86b6ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+table {
+  font-variant-numeric: tabular-nums;
+}
