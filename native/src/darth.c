@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
 
     // opening keyboard file
-    int fd = open(argv[1], O_RDONLY, 0);
+    int inputFd = open(argv[1], O_RDONLY, 0);
 
     if (sqlite3_open_v2(argv[2], &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
@@ -42,25 +42,25 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    struct input_event ie;
+    struct input_event inputEv;
 
     while (1)
     {
-        ssize_t n = read(fd, &ie, sizeof(ie));
+        ssize_t bytesRead = read(inputFd, &inputEv, sizeof(inputEv));
 
-        if (n == -1)
+        if (bytesRead == -1)
         {
             perror("read");
             break;
         }
 
-        if (n != sizeof(ie))
+        if (bytesRead != sizeof(inputEv))
         {
             fprintf(stderr, "Incomplete input_event read\n");
             break;
         }
 
-        handleKeyStroke(ie);
+        handleKeyStroke(inputEv);
     }
 
     sqlite3_close(db);

@@ -4,7 +4,7 @@
 // these at render time via getComputedStyle where exact color is required,
 // falling back to the CSS var directly where SVG supports it.
 
-export function cssVar(name: string): string {
+export function resolvedCssVar(name: string): string {
   if (typeof window === 'undefined') return '';
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }

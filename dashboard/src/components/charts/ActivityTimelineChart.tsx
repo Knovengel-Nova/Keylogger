@@ -3,15 +3,15 @@ import type { TimelinePoint } from '../../services/types';
 import { axisTickStyle, tooltipStyle } from './chartTheme';
 
 export function ActivityTimelineChart({ data }: { data: TimelinePoint[] }) {
-  const rows = data.map((p) => ({
-    t: new Date(p.bucketStart).toLocaleTimeString('en-US', { hour: 'numeric' }),
-    full: new Date(p.bucketStart).toLocaleString('en-US', { weekday: 'short', hour: 'numeric' }),
-    count: p.count,
+  const chartData = data.map((point) => ({
+    t: new Date(point.bucketStart).toLocaleTimeString('en-US', { hour: 'numeric' }),
+    full: new Date(point.bucketStart).toLocaleString('en-US', { weekday: 'short', hour: 'numeric' }),
+    count: point.count,
   }));
 
   return (
     <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={rows} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+      <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
         <defs>
           <linearGradient id="activityFill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="var(--series-1)" stopOpacity={0.25} />
@@ -24,7 +24,7 @@ export function ActivityTimelineChart({ data }: { data: TimelinePoint[] }) {
           tick={axisTickStyle}
           axisLine={{ stroke: 'var(--color-border-strong)' }}
           tickLine={false}
-          interval={Math.ceil(rows.length / 8)}
+          interval={Math.ceil(chartData.length / 8)}
         />
         <YAxis tick={axisTickStyle} axisLine={false} tickLine={false} width={40} />
         <Tooltip

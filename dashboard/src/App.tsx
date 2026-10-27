@@ -9,11 +9,11 @@ import { UserDetailPage } from './pages/UserDetailPage';
 import { DeviceHealthPage } from './pages/DeviceHealthPage';
 import { SettingsPage } from './pages/SettingsPage';
 
-const queryClient = new QueryClient();
+const appQueryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={appQueryClient}>
       <AuthProvider>
         <BrowserRouter>
           <Routes>

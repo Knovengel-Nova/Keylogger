@@ -19,8 +19,8 @@ public class HeartbeatSender implements Runnable{
         if(!context.isServerFound()){
             return;
         }
-        HeartBeatPacket packet = new HeartBeatPacket(context.getMyDeviceId());
-        context.sendUDPPacket(packet, context.getSeverAddress());
+        HeartBeatPacket heartbeatPkt = new HeartBeatPacket(context.getMyDeviceId());
+        context.sendUDPPacket(heartbeatPkt, context.getSeverAddress());
         context.print("HeartBeatSender: Heartbeat Packet Sent to Server @ " + context.getSeverAddress()+":"+Constants.UDP_PORT);
     }
 
@@ -30,7 +30,7 @@ public class HeartbeatSender implements Runnable{
             sendBeat();
             try {
                 Thread.sleep(interval); // wait for some time
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ex) {
                 context.print("HeartbeatSender: Error in startBeats()");
                 Thread.currentThread().interrupt();
                 break;

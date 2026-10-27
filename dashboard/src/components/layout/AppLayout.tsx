@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useAuth } from '../../context/AuthContext';
 import { SimulatedBanner } from '../ui/SimulatedBanner';
 
-const NAV = [
+const NAV_ITEMS = [
   { to: '/', label: 'Overview', end: true },
   { to: '/devices', label: 'Device Health' },
   { to: '/settings', label: 'Settings' },
@@ -23,7 +23,7 @@ export function AppLayout() {
             <p className="text-xs text-[var(--color-text-faint)]">Keylog analytics</p>
           </div>
           <nav className="flex flex-col gap-1">
-            {NAV.map((item) => (
+            {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}

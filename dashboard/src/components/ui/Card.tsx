@@ -1,19 +1,22 @@
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
 
+interface CardProps {
+  children: ReactNode;
+  className?: string;
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  action?: ReactNode;
+}
+
 export function Card({
   children,
   className,
   title,
   subtitle,
   action,
-}: {
-  children: ReactNode;
-  className?: string;
-  title?: ReactNode;
-  subtitle?: ReactNode;
-  action?: ReactNode;
-}) {
+}: CardProps) {
+  const hasHeader = Boolean(title || action);
   return (
     <div
       className={clsx(
@@ -22,7 +25,7 @@ export function Card({
         className,
       )}
     >
-      {(title || action) && (
+      {hasHeader && (
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             {title && <h3 className="text-sm font-semibold text-[var(--color-text)]">{title}</h3>}

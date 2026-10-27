@@ -7,7 +7,7 @@
 
 //  DB related fxn
 //  Inserted Memory data to DB
-int insertBatch(sqlite3 *db, struct KeyEvent *buffer, int count)
+int insertBatch(sqlite3 *db, struct KeyEvent *buffer, int batchSize)
 {
     const char *sql =
         "INSERT INTO events "
@@ -32,21 +32,21 @@ int insertBatch(sqlite3 *db, struct KeyEvent *buffer, int count)
         return -1;
     }
 
-    for (int i = 0; i < count; i++)
+    for (int idx = 0; idx < batchSize; idx++)
     {
-        sqlite3_bind_int64(stmt, 1, buffer[i].tv_sec);
-        sqlite3_bind_int64(stmt, 2, buffer[i].tv_usec);
-        sqlite3_bind_int(stmt, 3, buffer[i].code);
-        sqlite3_bind_int(stmt, 4, buffer[i].value);
+        sqlite3_bind_int64(stmt, 1, buffer[idx].tv_sec);
+        sqlite3_bind_int64(stmt, 2, buffer[idx].tv_usec);
+        sqlite3_bind_int(stmt, 3, buffer[idx].code);
+        sqlite3_bind_int(stmt, 4, buffer[idx].value);
 
-        char event_name[32];
+        char eventName[32];
 
-        snprintf(event_name, sizeof(event_name),
+        snprintf(eventName, sizeof(eventName),
                  "TEST_EVENT_%u_%u",
-                 buffer[i].code,
-                 buffer[i].value);
+                 buffer[idx].code,
+                 buffer[idx].value);
 
-        sqlite3_bind_text(stmt, 5, event_name, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 5, eventName, -1, SQLITE_TRANSIENT);
 
         if (sqlite3_step(stmt) != SQLITE_DONE)
         {

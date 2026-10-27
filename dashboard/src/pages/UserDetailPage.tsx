@@ -15,17 +15,17 @@ import { formatCompact, formatNumber, formatRelativeTime, initials } from '../li
 
 export function UserDetailPage() {
   const { userId = '' } = useParams();
-  const overviewQuery = useQuery({
+  const userOverviewQuery = useQuery({
     queryKey: ['user-overview', userId],
     queryFn: () => dataSource.getUserOverview(userId),
   });
 
-  if (overviewQuery.isLoading) {
+  if (userOverviewQuery.isLoading) {
     return <p className="text-sm text-[var(--color-text-muted)]">Loading…</p>;
   }
 
-  const overview = overviewQuery.data;
-  if (!overview) {
+  const userOverview = userOverviewQuery.data;
+  if (!userOverview) {
     return (
       <div>
         <p className="text-sm text-[var(--color-text)]">User not found.</p>
@@ -36,8 +36,8 @@ export function UserDetailPage() {
     );
   }
 
-  const { user, timeline, heatmap, keyFrequency, typingSpeed, sessions, sync, mlInsights } = overview;
-  const avgKpm = Math.round(typingSpeed.reduce((s, p) => s + p.keysPerMinute, 0) / typingSpeed.length) || 0;
+  const { user, timeline, heatmap, keyFrequency, typingSpeed, sessions, sync, mlInsights } = userOverview;
+  const averageKeysPerMin = Math.round(typingSpeed.reduce((s, p) => s + p.keysPerMinute, 0) / typingSpeed.length) || 0;
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -65,7 +65,7 @@ export function UserDetailPage() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <StatTile label="Total events" value={formatNumber(user.totalEvents)} />
         <StatTile label="Last 24h" value={formatCompact(user.eventsLast24h)} />
-        <StatTile label="Avg typing speed" value={`${avgKpm}/min`} hint="keys per minute" />
+        <StatTile label="Avg typing speed" value={`${averageKeysPerMin}/min`} hint="keys per minute" />
         <StatTile
           label="Pending sync"
           value={formatNumber(sync.pendingEvents)}
@@ -126,12 +126,12 @@ export function UserDetailPage() {
         action={<DataModeBadge live={false} label="Simulated — ML Server not built" />}
       >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {mlInsights.map((insight, i) => (
+          {mlInsights.map((mlEntry, i) => (
             <div key={i} className="rounded-lg border border-dashed border-[var(--color-border-strong)] p-3">
-              <p className="text-xs font-medium text-[var(--color-text)]">{insight.label}</p>
-              <p className="mt-1 text-xs text-[var(--color-text-muted)]">{insight.detail}</p>
+              <p className="text-xs font-medium text-[var(--color-text)]">{mlEntry.label}</p>
+              <p className="mt-1 text-xs text-[var(--color-text-muted)]">{mlEntry.detail}</p>
               <p className="mt-2 text-[11px] text-[var(--color-text-faint)]">
-                confidence {Math.round(insight.confidence * 100)}%
+                confidence {Math.round(mlEntry.confidence * 100)}%
               </p>
             </div>
           ))}

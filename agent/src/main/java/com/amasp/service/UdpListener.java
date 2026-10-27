@@ -36,26 +36,26 @@ public class UdpListener implements Runnable{
     }
 
     private void processPacket(DatagramPacket packet){
-        Packet pkt = null;
-        byte[] data = Arrays.copyOf(packet.getData(), packet.getLength());
+        Packet incomingPacket = null;
+        byte[] rawBytes = Arrays.copyOf(packet.getData(), packet.getLength());
 
         try{
-            pkt = PacketSerializer.deserialize(data, Packet.class);
-        }catch (Exception e){
-            e.printStackTrace();
+            incomingPacket = PacketSerializer.deserialize(rawBytes, Packet.class);
+        }catch (Exception err){
+            err.printStackTrace();
         }
 
-        if(pkt == null || pkt.getDeviceId() == context.getMyDeviceId()){
+        if(incomingPacket == null || incomingPacket.getDeviceId() == context.getMyDeviceId()){
             return;
         }
 
-        switch (pkt.getPacketType()){
+        switch (incomingPacket.getPacketType()){
             case DISCOVERY_RESPONSE ->
-                handleDiscoveryResponse(packet, pkt);
+                handleDiscoveryResponse(packet, incomingPacket);
 
             case ACK ->
-                handleAck(packet, pkt);
-            default -> throw new IllegalArgumentException("Unexpected value: " + pkt.getPacketType());
+                handleAck(packet, incomingPacket);
+            default -> throw new IllegalArgumentException("Unexpected value: " + incomingPacket.getPacketType());
         }
     }
 

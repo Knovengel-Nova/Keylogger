@@ -11,19 +11,19 @@ import java.util.UUID;
 public class Agent {
     public static void main(String[] args) {
         UUID deviceUUID = null;
-        AgentContext agentContext =  new AgentContext();
+        AgentContext context = new AgentContext();
 
-        DiscoveryPacket pkt = new DiscoveryPacket(deviceUUID);
-        agentContext.sendUDPPacket(pkt, NetworkUtil.getBroadcastAddress());
+        DiscoveryPacket discoveryPacket = new DiscoveryPacket(deviceUUID);
+        context.sendUDPPacket(discoveryPacket, NetworkUtil.getBroadcastAddress());
 
-        UdpListener udpListener = new UdpListener(agentContext);
-        new Thread(udpListener).start();
+        UdpListener listener = new UdpListener(context);
+        new Thread(listener).start();
 
-        HeartbeatSender heartbeatSender = new HeartbeatSender(agentContext);
-        new Thread(heartbeatSender).start();
+        HeartbeatSender heartbeatService = new HeartbeatSender(context);
+        new Thread(heartbeatService).start();
 
-        TcpSender tcpSender = new TcpSender();
-        new Thread(tcpSender).start();
+        TcpSender tcpService = new TcpSender();
+        new Thread(tcpService).start();
 
         System.out.println("Agent started");
     }

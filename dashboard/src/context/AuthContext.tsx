@@ -1,35 +1,35 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
 
-interface AdminSession {
+interface AuthSession {
   username: string;
 }
 
 interface AuthContextValue {
-  session: AdminSession | null;
+  session: AuthSession | null;
   login: (username: string) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const STORAGE_KEY = 'amasp.mock-session';
+const SESSION_STORAGE_KEY = 'amasp.mock-session';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<AdminSession | null>(() => {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as AdminSession) : null;
+  const [session, setSession] = useState<AuthSession | null>(() => {
+    const storedValue = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    return storedValue ? (JSON.parse(storedValue) as AuthSession) : null;
   });
 
   const value = useMemo<AuthContextValue>(
     () => ({
       session,
       login: (username: string) => {
-        const next = { username };
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-        setSession(next);
+        const newSession = { username };
+        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(newSession));
+        setSession(newSession);
       },
       logout: () => {
-        sessionStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(SESSION_STORAGE_KEY);
         setSession(null);
       },
     }),
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
+  const authCtx = useContext(AuthContext);
+  if (!authCtx) throw new Error('useAuth must be used within AuthProvider');
+  return authCtx;
 }

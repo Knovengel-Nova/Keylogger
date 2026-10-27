@@ -2,17 +2,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { dataSource } from '../services';
 
-const PAGE_SIZE = 20;
+const ROWS_PER_PAGE = 20;
 
 export function EventLogTable({ userId }: { userId: string }) {
-  const [page, setPage] = useState(1);
-  const query = useQuery({
-    queryKey: ['event-log', userId, page],
-    queryFn: () => dataSource.getEventLog(userId, page, PAGE_SIZE),
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventLogQuery = useQuery({
+    queryKey: ['event-log', userId, currentPage],
+    queryFn: () => dataSource.getEventLog(userId, currentPage, ROWS_PER_PAGE),
     placeholderData: (prev) => prev,
   });
 
-  const totalPages = query.data ? Math.max(1, Math.ceil(query.data.total / PAGE_SIZE)) : 1;
+  const pageCount = eventLogQuery.data ? Math.max(1, Math.ceil(eventLogQuery.data.total / ROWS_PER_PAGE)) : 1;
 
   return (
     <div>
@@ -29,29 +29,29 @@ export function EventLogTable({ userId }: { userId: string }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--color-border)]">
-            {query.data?.events.map((ev) => (
-              <tr key={ev.id} className="text-[var(--color-text)]">
+            {eventLogQuery.data?.events.map((eventRow) => (
+              <tr key={eventRow.id} className="text-[var(--color-text)]">
                 <td className="py-2 pr-4 tabular-nums text-[var(--color-text-muted)]">
-                  {new Date(ev.timestampS * 1000).toLocaleTimeString('en-US')}
+                  {new Date(eventRow.timestampS * 1000).toLocaleTimeString('en-US')}
                 </td>
-                <td className="py-2 pr-4 font-mono">{ev.eventName}</td>
-                <td className="py-2 pr-4 tabular-nums text-[var(--color-text-muted)]">{ev.eventCode}</td>
+                <td className="py-2 pr-4 font-mono">{eventRow.eventName}</td>
+                <td className="py-2 pr-4 tabular-nums text-[var(--color-text-muted)]">{eventRow.eventCode}</td>
                 <td className="py-2 pr-4 text-[var(--color-text-muted)]">
-                  {ev.eventValue === 1 ? 'down' : ev.eventValue === 0 ? 'up' : 'repeat'}
+                  {eventRow.eventValue === 1 ? 'down' : eventRow.eventValue === 0 ? 'up' : 'repeat'}
                 </td>
                 <td className="py-2 pr-4">
                   <span
                     className={
                       'rounded-full px-2 py-0.5 text-[10px] font-medium ' +
-                      (ev.status === 1
+                      (eventRow.status === 1
                         ? 'bg-[var(--color-good)]/10 text-[var(--color-good)]'
                         : 'bg-[var(--color-warn)]/10 text-[var(--color-warn)]')
                     }
                   >
-                    {ev.status === 1 ? 'delivered' : 'pending'}
+                    {eventRow.status === 1 ? 'delivered' : 'pending'}
                   </span>
                 </td>
-                <td className="py-2 font-mono text-[var(--color-text-faint)]">{ev.batchId ?? '—'}</td>
+                <td className="py-2 font-mono text-[var(--color-text-faint)]">{eventRow.batchId ?? '—'}</td>
               </tr>
             ))}
           </tbody>
@@ -60,24 +60,24 @@ export function EventLogTable({ userId }: { userId: string }) {
 
       <div className="mt-3 flex items-center justify-between text-xs text-[var(--color-text-muted)]">
         <span>
-          {query.data ? `${query.data.total.toLocaleString()} events` : 'Loading…'}
+          {eventLogQuery.data ? `${eventLogQuery.data.total.toLocaleString()} events` : 'Loading…'}
         </span>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             className="rounded-md border border-[var(--color-border)] px-2 py-1 disabled:opacity-40"
           >
             Prev
           </button>
           <span>
-            Page {page} / {totalPages}
+            Page {currentPage} / {pageCount}
           </span>
           <button
             type="button"
-            disabled={page >= totalPages}
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage >= pageCount}
+            onClick={() => setCurrentPage((p) => Math.min(pageCount, p + 1))}
             className="rounded-md border border-[var(--color-border)] px-2 py-1 disabled:opacity-40"
           >
             Next

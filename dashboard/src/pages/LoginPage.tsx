@@ -5,18 +5,18 @@ import { useAuth } from '../context/AuthContext';
 export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('admin');
+  const [adminUsername, setAdminUsername] = useState('admin');
 
-  function handleSubmit(e: FormEvent) {
+  function onFormSubmit(e: FormEvent) {
     e.preventDefault();
-    login(username || 'admin');
+    login(adminUsername || 'admin');
     navigate('/');
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)] px-4">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={onFormSubmit}
         className="w-full max-w-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6"
       >
         <h1 className="text-lg font-semibold text-[var(--color-text)]">AMASP Admin</h1>
@@ -26,8 +26,8 @@ export function LoginPage() {
         <label className="mt-5 block text-xs font-medium text-[var(--color-text-faint)]">
           Username
           <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={adminUsername}
+            onChange={(e) => setAdminUsername(e.target.value)}
             className="mt-1 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-accent)]"
           />
         </label>

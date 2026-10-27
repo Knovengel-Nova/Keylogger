@@ -3,9 +3,9 @@ import type { SessionBlock } from '../../services/types';
 import { formatDateTime } from '../../lib/format';
 
 export function SessionTimeline({ sessions }: { sessions: SessionBlock[] }) {
-  const [hovered, setHovered] = useState<SessionBlock | null>(null);
+  const [hoveredSession, setHoveredSession] = useState<SessionBlock | null>(null);
 
-  const { blocks, start, span } = useMemo(() => {
+  const { blocks: sessionBlocks, start, span } = useMemo(() => {
     if (sessions.length === 0) return { blocks: [], start: 0, span: 1 };
     const start = new Date(sessions[0].start).getTime();
     const end = new Date(sessions[sessions.length - 1].end).getTime();
@@ -16,18 +16,18 @@ export function SessionTimeline({ sessions }: { sessions: SessionBlock[] }) {
   return (
     <div>
       <div className="flex h-6 overflow-hidden rounded-md border border-[var(--color-border)]">
-        {blocks.map((b, i) => {
-          const left = ((new Date(b.start).getTime() - start) / span) * 100;
-          const width = ((new Date(b.end).getTime() - new Date(b.start).getTime()) / span) * 100;
+        {sessionBlocks.map((block, i) => {
+          const left = ((new Date(block.start).getTime() - start) / span) * 100;
+          const width = ((new Date(block.end).getTime() - new Date(block.start).getTime()) / span) * 100;
           return (
             <div
               key={i}
-              onMouseEnter={() => setHovered(b)}
-              onMouseLeave={() => setHovered((h) => (h === b ? null : h))}
+              onMouseEnter={() => setHoveredSession(block)}
+              onMouseLeave={() => setHoveredSession((prev) => (prev === block ? null : prev))}
               style={{
                 width: `${width}%`,
                 marginLeft: i === 0 ? `${left}%` : undefined,
-                background: b.kind === 'active' ? 'var(--series-1)' : 'var(--color-surface-2)',
+                background: block.kind === 'active' ? 'var(--series-1)' : 'var(--color-surface-2)',
               }}
               className="h-full shrink-0 border-r border-[var(--color-surface)] last:border-r-0"
             />
@@ -44,8 +44,8 @@ export function SessionTimeline({ sessions }: { sessions: SessionBlock[] }) {
           </span>
         </div>
         <span>
-          {hovered
-            ? `${hovered.kind === 'active' ? 'Active' : 'Idle'}: ${formatDateTime(hovered.start)} – ${formatDateTime(hovered.end)}`
+          {hoveredSession
+            ? `${hoveredSession.kind === 'active' ? 'Active' : 'Idle'}: ${formatDateTime(hoveredSession.start)} – ${formatDateTime(hoveredSession.end)}`
             : 'Hover a block for detail'}
         </span>
       </div>
